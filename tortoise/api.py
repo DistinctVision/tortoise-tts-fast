@@ -1,5 +1,5 @@
 # ## AGPL: a notification must be added stating that changes have been made to that file.
-
+from typing import Union
 import os
 import random
 from time import time
@@ -207,7 +207,7 @@ class TextToSpeech:
         autoregressive_batch_size=None,
         models_dir=MODELS_DIR,
         enable_redaction=True,
-        device=None,
+        device: Union[torch.device, str] = 'cuda' if torch.cuda.is_available() else 'cpu',
         high_vram=False,
         kv_cache=True,
         ar_checkpoint=None,
@@ -240,7 +240,7 @@ class TextToSpeech:
             else autoregressive_batch_size
         )
         self.enable_redaction = enable_redaction
-        self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+        self.device = torch.device(device)
         if self.enable_redaction:
             self.aligner = Wav2VecAlignment()
 
